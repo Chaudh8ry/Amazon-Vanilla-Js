@@ -1,6 +1,6 @@
 import { products } from "../data/products.js";
 
-export const cart = [{
+export let cart = [{
   productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
   quantity: 2
 },{
@@ -24,10 +24,34 @@ export function addToCart(productId){
     
     if(matchingItem){
       matchingItem.quantity += quantity;
+      console.log(quantity);
     } else {
       cart.push({
         productId,
         quantity
       });
+      console.log(quantity);
     }
+}
+
+//Removing Priouct form a cart
+export function removeFromCart(productId){
+  const newCart = []; // Creates a new empty array
+
+  cart.forEach((cartItem) => { 
+    if(cartItem.productId !== productId){ // Keeps only items that DON'T match the given productId
+      newCart.push(cartItem); //// Adds those items to the new cart
+    }
+  });
+
+  cart = newCart; // Replaces the old cart with the updated one
+
+/*
+  Instead of modifying the existing cart array, it creates a new one (newCart).
+
+  It loops through each item and only keeps the ones whose productId does not match the deleted item's productId.
+
+  At the end, it replaces the old cart with newCart, effectively removing the unwanted product.
+*/
+
 }
