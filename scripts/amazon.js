@@ -84,8 +84,13 @@ function updateCartQuantity(){
     });
 
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity; //displaying cart quantity
-
 }
+
+//Runs when we reload the page
+window.onload = () => {
+  updateCartQuantity();
+}
+
 //Updating the Cart
 document.querySelectorAll('.js-add-to-cart')
   .forEach((button) => {
