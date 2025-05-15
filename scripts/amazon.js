@@ -1,4 +1,4 @@
-import {cart, addToCart} from '../data/cart.js';
+import {cart, addToCart,calculateCartQuantity} from '../data/cart.js';
 
 import {products} from '../data/products.js';
 
@@ -77,13 +77,9 @@ const addedMessageTimeouts = {};
 
 //Updating the cart quantity
 function updateCartQuantity(){
-    let cartQuantity = 0;
+    const cartQuantity = calculateCartQuantity();
 
-    cart.forEach((cartItem) => {
-      cartQuantity += cartItem.quantity;
-    });
-
-    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity; //displaying cart quantity
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity || ''; //displaying cart quantity
 }
 
 //Runs when we reload the page
