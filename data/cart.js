@@ -1,8 +1,8 @@
 import { products } from "../data/products.js";
 
-export let cart = JSON.parse(localStorage.getItem('cart'));
-
-if(!cart){
+export let cart = JSON.parse(localStorage.getItem('cart')); //retrives the cart products if saved earlier
+ 
+if(!cart){ //if cart is empty, we will display some default products in cart
   cart = [{
     productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
     quantity: 2
@@ -47,25 +47,22 @@ export function addToCart(productId){
 //Removing Priouct form a cart
 export function removeFromCart(productId){
   const newCart = []; // Creates a new empty array
-  
+
+  /* Instead of directly deleting an item from the existing cart array,we are creating a new array (newCart).
+     Then, it loops through the original cart:
+     If a product’s id matches the one being deleted, it is ignored.
+     All other products are added to newCart. */
   cart.forEach((cartItem) => { 
     if(cartItem.productId !== productId){ // Keeps only items that DON'T match the given productId
       newCart.push(cartItem); //// Adds those items to the new cart
     }
   });
-
   cart = newCart; // Replaces the old cart with the updated one
 
-/*
-  Instead of modifying the existing cart array, it creates a new one (newCart).
-
-  It loops through each item and only keeps the ones whose productId does not match the deleted item's productId.
-
-  At the end, it replaces the old cart with newCart, effectively removing the unwanted product.
-  */
- saveToStorage();
+  saveToStorage();
 }
 
+//Calculate Total Cart Quantity
 export function calculateCartQuantity() {
   let cartQuantity = 0;
 
@@ -74,4 +71,19 @@ export function calculateCartQuantity() {
   });
 
   return cartQuantity;
+}
+
+//Finds a matching productId in cart and updates its quantity to new Quantity
+export function updateQuantity(productId,newQuantity){
+  let matchingItem;
+
+  cart.forEach((cartItem) => {
+    if(productId === cartItem.productId){
+      matchingItem = cartItem;
+    }
+  });
+
+  matchingItem.quantity = newQuantity;
+
+  saveToStorage();
 }
