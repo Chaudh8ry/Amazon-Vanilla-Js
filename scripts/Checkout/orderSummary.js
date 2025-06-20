@@ -5,38 +5,24 @@ import {
   updateQuantity,
   updateDeliveryOption
 } from '../../data/cart.js';
-import {products} from '../../data/products.js';
+import {products,getProduct} from '../../data/products.js';
 import {formatCurrency} from '../utils/money.js'; //'named export' using curly braces
-import {deliveryOptions} from '../../data/deliveryOptions.js';
+import {deliveryOptions,getDeliveryOption} from '../../data/deliveryOptions.js';
 
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'; //'default export' syntax (no curly braces) we use it when we have to import only 1 thing 
 
 export function renderOrderSummary(){
   
-  let cartSummaryHTML = '';
+let cartSummaryHTML = '';
 
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;
 
-  let matchingProduct;
-
-  products.forEach((product) => {
-    if(product.id === productId){
-      matchingProduct = product;
-    }
-  });
-  
+  const matchingProduct = getProduct(productId);
   // Retrieve the selected delivery option ID from the cart item
   const deliveryOptionId = cartItem.deliveryOptionId;
 
-  let deliveryOption;
-
-  // Finding the delivery option that matches the selected ID
-  deliveryOptions.forEach((option) => {
-    if(option.id === deliveryOptionId){
-      deliveryOption = option;
-    }
-  });
+  const deliveryOption = getDeliveryOption(deliveryOptionId);
 
   const today = dayjs();
   const deliveryDate = today.add(
