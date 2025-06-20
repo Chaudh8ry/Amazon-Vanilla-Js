@@ -11,7 +11,10 @@ import {deliveryOptions} from '../data/deliveryOptions.js';
 
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'; //'default export' syntax (no curly braces) we use it when we have to import only 1 thing 
 
-let cartSummaryHTML = '';
+function renderOrderSummary(){
+
+  
+  let cartSummaryHTML = '';
 
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;
@@ -169,37 +172,41 @@ document.querySelectorAll('.js-delete-link')
       link.addEventListener('click', () => {
         const productId = link.dataset.productId;
 
-        // Here's an example of a feature we can add: validation.
-        // Note: we need to move the quantity-related code up
-        // because if the new quantity is not valid, we should
-        // return early and NOT run the rest of the code. This
-        // technique is called an "early return"
-        const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
-        const newQuantity = Number(quantityInput.value);
-        updateQuantity(productId,newQuantity);
-      
-        if(newQuantity < 0 || newQuantity >= 1000){
-          alert('Quantity must be at least 0 and less than 1000');
-          return;
-        }
+    // Here's an example of a feature we can add: validation.
+    // Note: we need to move the quantity-related code up
+    // because if the new quantity is not valid, we should
+    // return early and NOT run the rest of the code. This
+    // technique is called an "early return"
+    const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
+    const newQuantity = Number(quantityInput.value);
+    updateQuantity(productId,newQuantity);
 
-        updateQuantity(productId, newQuantity);
+    if(newQuantity < 0 || newQuantity >= 1000){
+      alert('Quantity must be at least 0 and less than 1000');
+      return;
+    }
 
-        const container = document.querySelector(`.js-cart-item-container-${productId}`);
-        container.classList.remove('is-editing-quantity');
-        
-        const quantityLabel = document.querySelector(`
-          .js-quantity-label-${productId}`);
-          quantityLabel.innerHTML = newQuantity;
+    updateQuantity(productId, newQuantity);
 
-          updateCartQuantity();
-      });
+    const container = document.querySelector(`.js-cart-item-container-${productId}`);
+    container.classList.remove('is-editing-quantity');
+    
+    const quantityLabel = document.querySelector(`
+      .js-quantity-label-${productId}`);
+      quantityLabel.innerHTML = newQuantity;
+
+      updateCartQuantity();
+  });
+  });
+
+  document.querySelectorAll('.js-delivery-option')
+  .forEach((element) => {
+    element.addEventListener('click',() => {
+      const {productId,deliveryOptionId} = element.dataset;
+      updateDeliveryOption(productId,deliveryOptionId);
+      renderOrderSummary();
     });
+  });
+}
 
-    document.querySelectorAll('.js-delivery-option')
-      .forEach((element) => {
-        element.addEventListener('click',() => {
-          const {productId,deliveryOptionId} = element.dataset;
-          updateDeliveryOption(productId,deliveryOptionId);
-        });
-      });
+renderOrderSummary();
