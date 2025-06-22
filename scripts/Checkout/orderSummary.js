@@ -7,7 +7,7 @@ import {
 } from '../../data/cart.js';
 import {products,getProduct} from '../../data/products.js';
 import {formatCurrency} from '../utils/money.js'; //'named export' using curly braces
-import {deliveryOptions,getDeliveryOption} from '../../data/deliveryOptions.js';
+import {deliveryOptions,getDeliveryOption,calculateDeliveryDate} from '../../data/deliveryOptions.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'; //'default export' syntax (no curly braces) we use it when we have to import only 1 thing 
 import { renderPaymentSummary } from './paymentSummary.js';
 import { renderCheckoutHeader } from './checkoutHeader.js';
@@ -25,12 +25,7 @@ cart.forEach((cartItem) => {
 
   const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-  const today = dayjs();
-  const deliveryDate = today.add(
-    deliveryOption.deliveryDays,
-    'days'
-  );
-  const dateString = deliveryDate.format('dddd, MMMM D');
+   const dateString = calculateDeliveryDate(deliveryOption);
 
   cartSummaryHTML += `
     <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
@@ -81,12 +76,8 @@ cart.forEach((cartItem) => {
 function deliveryOptionsHTML(matchingProduct,cartItem){
   let html = '';
   deliveryOptions.forEach((deliveryOption) =>{
-    const today = dayjs();
-    const deliveryDate = today.add(
-      deliveryOption.deliveryDays,
-      'days'
-    );
-    const dateString = deliveryDate.format('dddd, MMMM D');
+    const dateString = calculateDeliveryDate(deliveryOption);
+
     const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)} -`;
     
     // Check if this delivery option is the one currently selected
@@ -108,9 +99,6 @@ function deliveryOptionsHTML(matchingProduct,cartItem){
         </div>
       </div>
     </div>`
-  //   console.log(`<div class="delivery-option-date">
-  //           ${dateString}
-  //         </div>`);
   });
   return html;
 }
