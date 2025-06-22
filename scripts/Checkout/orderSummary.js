@@ -170,6 +170,7 @@ document.querySelectorAll('.js-delete-link')
       quantityLabel.innerHTML = newQuantity;
 
       updateCartQuantity();
+      renderPaymentSummary();
   });
   });
 
