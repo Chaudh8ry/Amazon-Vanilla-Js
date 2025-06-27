@@ -1,15 +1,15 @@
 // import { products } from "./products.js";
 class Cart{
   cartItems; //retrives the cart products if saved earlier
-  localStorageKey;
+  #localStorageKey; //Makes it Private Property , cant be accessed outside the class
   
+  //Constructor
   constructor(localStorageKey){
-    this.localStorageKey = localStorageKey;
-    
-    this.loadFromStorage();    
+    this.#localStorageKey = localStorageKey;
+    this.#loadFromStorage();    
   } 
 
-  loadFromStorage(){       
+  #loadFromStorage(){       
     this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
     if(!this.cartItems){ //if cart is empty, we will display some default products in cart
       this.cartItems = [{
@@ -25,7 +25,7 @@ class Cart{
   };
 
   saveToStorage(){
-    localStorage.setItem(this.localStorageKey,JSON.stringify(this.cartItems));
+    localStorage.setItem(this.#localStorageKey,JSON.stringify(this.cartItems));
   };
 
   //Adding Products in Cart
@@ -84,6 +84,7 @@ class Cart{
   
     return cartQuantity;
   };
+
   //Finds a matching productId in cart and updates its quantity to new Quantity
   updateQuantity(productId,newQuantity){
     let matchingItem;
