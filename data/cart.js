@@ -1,17 +1,22 @@
 import { products } from "../data/products.js";
 
-export let cart = JSON.parse(localStorage.getItem('cart')); //retrives the cart products if saved earlier
- 
-if(!cart){ //if cart is empty, we will display some default products in cart
-  cart = [{
-    productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
-    quantity: 2,
-    deliveryOptionId: '1'
-  },{
-    productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
-    quantity: 1,
-    deliveryOptionId: '3'
-  }];
+export let cart; //retrives the cart products if saved earlier
+
+loadFromStorage();
+
+export function loadFromStorage(){       
+  cart = JSON.parse(localStorage.getItem('cart'));
+  if(!cart){ //if cart is empty, we will display some default products in cart
+    cart = [{
+      productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+      quantity: 2,
+      deliveryOptionId: '1'
+    },{
+      productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+      quantity: 1,
+      deliveryOptionId: '3'
+    }];
+  }
 }
 
   function saveToStorage(){
@@ -33,10 +38,9 @@ export function addToCart(productId){
 
     let quantity = Number(quantitySelector.value) || 1;
     
-    if(matchingItem){
+    if(matchingItem){ //if product is already present, update quantity
       matchingItem.quantity += quantity;
-      console.log(quantity);
-    } else {
+    } else { //if not present in cart Push it in cart
       cart.push({
         productId,
         quantity,
