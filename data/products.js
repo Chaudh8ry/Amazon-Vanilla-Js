@@ -55,6 +55,35 @@ class Clothing extends Product {
   }
 }
 
+/*
+1. Inside a method, "this" points to the outer Object
+  
+  const object3 ={
+    method(){
+      console.log(this);
+    }
+  };
+
+2. Inside a function this = undefined, but we can change it using .call() method
+ 
+  function logThis(){
+    console.log(this);
+  }
+  logThis.call('hello');
+
+3. Arrow function, do not change the value of 'this'
+  
+  console.log(this);
+  [1,2,3].forEach(() => {
+    console.log(this);
+  });
+*/
+
+function logThis(){
+  console.log(this);
+}
+logThis.call('gdfgf');
+
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
