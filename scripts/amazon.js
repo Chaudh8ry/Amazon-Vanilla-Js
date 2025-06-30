@@ -1,16 +1,19 @@
 import {cart, addToCart,calculateCartQuantity} from '../data/cart.js';
 
-import {products} from '../data/products.js';
+import {products,loadProducts} from '../data/products.js';
 
 import {formatCurrency} from './utils/money.js';
 
-let productHTML = '';
+loadProducts(renderProductsGrid);
 
-products.forEach((product) => {
+function renderProductsGrid(){
+  let productHTML = '';
+  
+  products.forEach((product) => {
   productHTML += `
      <div class="product-container">
           <div class="product-image-container">
-            <img class="product-image"
+          <img class="product-image"
               src="${product.image}">
           </div>
 
@@ -58,19 +61,19 @@ products.forEach((product) => {
             Add to Cart
           </button>
         </div>
-  `
-});
-
-document.querySelector('.js-products-grid').innerHTML = productHTML;
-
-// We're going to use an object to save the timeout ids.
+        `
+      });
+      
+      document.querySelector('.js-products-grid').innerHTML = productHTML;
+      
+      // We're going to use an object to save the timeout ids.
 // The reason we use an object is because each product
 // will have its own timeoutId. So an object lets us
 // save multiple timeout ids for different products.
 // For example:
 // {
-//   'product-id1': 2,
-//   'product-id2': 5,
+  //   'product-id1': 2,
+  //   'product-id2': 5,
 //   ...
 // }
 // (2 and 5 are ids that are returned when we call setTimeout).
@@ -79,10 +82,10 @@ const addedMessageTimeouts = {};
 
 //Updating the cart quantity
 function updateCartQuantity(){
-    const cartQuantity = calculateCartQuantity();
+  const cartQuantity = calculateCartQuantity();
 
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity || ''; //displaying cart quantity
-}
+  }
 
 //Runs when we reload the page
 window.onload = () => {
@@ -121,3 +124,4 @@ document.querySelectorAll('.js-add-to-cart')
     addedMessageTimeouts[productId] = timeoutId;
     });
   });
+}
